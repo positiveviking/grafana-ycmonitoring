@@ -1,0 +1,40 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "datasource",
+  "name": "Monitoring",
+  "id": "positiveviking-ycmonitoring-datasource",
+  "metrics": true,
+  "backend": true,
+  "executable": "gpx_ycmonitoring",
+  "info": {
+    "description": "Datasource for yandex cloud monitoring",
+    "author": {
+      "name": "Andrey Mitrofanov"
+    },
+    "keywords": [
+      "datasource",
+      "metrics"
+    ],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "github",
+        "url": "https://github.com/positiveviking/grafana-ycmonitoring"
+      },
+      {
+        "name": "yandex cloud monitoring",
+        "url": "https://cloud.yandex.ru/services/monitoring"
+      }
+    ],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": "^9.2.5",
+    "plugins": []
+  }
+}
