@@ -31,5 +31,5 @@ vendor/
 
 # Editor
 .idea
-
+.devcontainer/
 .eslintcache

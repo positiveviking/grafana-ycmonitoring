@@ -80,11 +80,13 @@ func (d *monitoringDatasource) QueryData(ctx context.Context, req *backend.Query
 
 		for _, metric := range metrics.Metrics {
 			var valuesField *data.Field
-			switch metric.Type {
-			case "IGAUGE":
+			switch {
+			case len(metric.Timeseries.DoubleValues) > 0:
+				valuesField = valueField(mr.Alias, metric.Name, metric.Labels, metric.Timeseries.DoubleValues)
+			case len(metric.Timeseries.Int64Values) > 0:
 				valuesField = valueField(mr.Alias, metric.Name, metric.Labels, metric.Timeseries.Int64Values)
 			default:
-				valuesField = valueField(mr.Alias, metric.Name, metric.Labels, metric.Timeseries.DoubleValues)
+				continue
 			}
 
 			timestamps := make([]time.Time, len(metric.Timeseries.Timestamps))

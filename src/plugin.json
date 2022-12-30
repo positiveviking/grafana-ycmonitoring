@@ -3,6 +3,7 @@
   "type": "datasource",
   "name": "Monitoring",
   "id": "positiveviking-ycmonitoring-datasource",
+  "state": "alpha",
   "metrics": true,
   "backend": true,
   "executable": "gpx_ycmonitoring",
@@ -34,7 +35,7 @@
     "updated": "%TODAY%"
   },
   "dependencies": {
-    "grafanaDependency": "^9.2.5",
+    "grafanaDependency": ">=8.0.0",
     "plugins": []
   }
 }

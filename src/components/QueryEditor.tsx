@@ -1,7 +1,7 @@
 import defaults from 'lodash/defaults';
 
 import React, { ChangeEvent, PureComponent } from 'react';
-import { Field, InlineField, InlineFieldRow, Input, Select, TextArea } from '@grafana/ui';
+import { Field, InlineField, InlineFieldRow, Input, QueryField, Select } from '@grafana/ui';
 import { QueryEditorProps, SelectableValue } from '@grafana/data';
 import { DataSource } from '../datasource';
 import { defaultQuery, MonitoringDataSourceOptions, MonitoringQuery } from '../types';
@@ -29,13 +29,13 @@ export class QueryEditor extends PureComponent<Props> {
     onRunQuery();
   };
 
-  onQueryTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const { onChange, onRunQuery, query } = this.props;
-    onChange({ ...query, queryText: event.target.value });
-    onRunQuery();
+  onQueryTextChange = (value: string) => {
+    const { onChange, query } = this.props;
+    onChange({ ...query, queryText: value });
   };
 
   render() {
+    const { onRunQuery } = this.props;
     const query = defaults(this.props.query, defaultQuery);
     const { folderId, aggregation, alias, queryText } = query;
     const aggOptions: Array<SelectableValue<string>> = [
@@ -75,13 +75,15 @@ export class QueryEditor extends PureComponent<Props> {
           invalid={queryText.includes("folderId")}
           error="do not use folderId in query"
         >
-          <TextArea
-            name='query-text'
-            value={queryText}
+          <QueryField
+            query={queryText}
+            placeholder="Type query (Shift+Enter to run)"
+            portalOrigin="ycmonitoring"
             onChange={this.onQueryTextChange}
+            onRunQuery={onRunQuery}
           />
         </Field>
-      </div>
+      </div >
     );
   }
 }
