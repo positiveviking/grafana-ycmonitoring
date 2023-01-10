@@ -3,7 +3,7 @@
   "type": "datasource",
   "name": "Monitoring",
   "id": "positiveviking-ycmonitoring-datasource",
-  "state": "alpha",
+  "state": "beta",
   "metrics": true,
   "backend": true,
   "executable": "gpx_ycmonitoring",
@@ -30,7 +30,20 @@
         "url": "https://cloud.yandex.ru/services/monitoring"
       }
     ],
-    "screenshots": [],
+    "screenshots": [
+      {
+        "name": "Dashboard panel",
+        "path": "img/dashboard.png"
+      },
+      {
+        "name": "Explore",
+        "path": "img/explore.png"
+      },
+      {
+        "name": "Settings",
+        "path": "img/settings.png"
+      }
+    ],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
