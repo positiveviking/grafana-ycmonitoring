@@ -9,6 +9,7 @@ export interface MonitoringQuery extends DataQuery {
 
 export const defaultQuery: Partial<MonitoringQuery> = {
   aggregation: "AVG",
+  queryText: "",
 };
 
 /**

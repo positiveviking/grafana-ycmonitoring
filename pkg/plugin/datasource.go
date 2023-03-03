@@ -59,6 +59,10 @@ func (d *monitoringDatasource) QueryData(ctx context.Context, req *backend.Query
 		if mr.FolderID != "" {
 			folderID = mr.FolderID
 		}
+
+		if folderID == "" || mr.QueryText == "" {
+			continue
+		}
 		req := metricsReq{
 			Query:    mr.QueryText,
 			FromTime: query.TimeRange.From,
