@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"strings"
 	"time"
 
@@ -82,13 +83,14 @@ func (d *monitoringDatasource) QueryData(ctx context.Context, req *backend.Query
 			continue
 		}
 
+		alias := fixupAlias(mr.Alias)
 		for _, metric := range metrics.Metrics {
 			var valuesField *data.Field
 			switch {
 			case len(metric.Timeseries.DoubleValues) > 0:
-				valuesField = valueField(mr.Alias, metric.Name, metric.Labels, metric.Timeseries.DoubleValues)
+				valuesField = valueField(alias, metric.Name, metric.Labels, metric.Timeseries.DoubleValues)
 			case len(metric.Timeseries.Int64Values) > 0:
-				valuesField = valueField(mr.Alias, metric.Name, metric.Labels, metric.Timeseries.Int64Values)
+				valuesField = valueField(alias, metric.Name, metric.Labels, metric.Timeseries.Int64Values)
 			default:
 				continue
 			}
@@ -155,11 +157,25 @@ func parseAggregation(in string) gridAggregation {
 
 func valueField(alias string, name string, labels map[string]string, values interface{}) *data.Field {
 	if alias != "" {
-		rndr, err := mustache.Render(alias, labels)
+		ctx := make(map[string]string, len(labels))
+		for k, v := range labels {
+			ctx[fixupTemplateValue(k)] = v
+		}
+		rndr, err := mustache.Render(alias, ctx)
 		if err == nil {
 			name = rndr
 			labels = nil
 		}
 	}
 	return data.NewField(name, labels, values)
+}
+
+var aliasFixupRe = regexp.MustCompile(`\{\{[^}]*\}\}`)
+
+func fixupAlias(alias string) string {
+	return aliasFixupRe.ReplaceAllStringFunc(alias, fixupTemplateValue)
+}
+
+func fixupTemplateValue(v string) string {
+	return strings.ReplaceAll(v, ".", "!!")
 }
